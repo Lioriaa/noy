@@ -1,0 +1,1557 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>אוצר מילים באנגלית – Teamwork Unit 2 (כיתה ו׳)</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#121a2b;
+      --panel2:#0f1727;
+      --text:#e8eefc;
+      --muted:#b8c4e6;
+      --accent:#7aa2ff;
+      --good:#2dd4bf;
+      --bad:#fb7185;
+      --warn:#fbbf24;
+      --border:rgba(255,255,255,.12);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --font: system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans Hebrew", sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(122,162,255,.28), transparent 60%),
+                  radial-gradient(900px 500px at 80% 0%, rgba(45,212,191,.18), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+    a{color:var(--accent)}
+    header{
+      padding:24px 16px 12px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .title{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(20px, 2.5vw, 32px);
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      max-width:70ch;
+    }
+    .notice{
+      margin-top:12px;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      box-shadow:var(--shadow);
+    }
+    .top-controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .panel{
+      max-width:1100px;
+      margin: 12px auto 22px;
+      padding: 14px;
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+    }
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+      padding: 0 16px 10px;
+      max-width:1100px;
+      margin: 0 auto;
+    }
+    .tab-btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .05s ease, background .15s ease, border .15s ease;
+      font-weight:600;
+    }
+    .tab-btn:hover{ background: rgba(255,255,255,.09); }
+    .tab-btn:active{ transform: translateY(1px); }
+    .tab-btn.active{
+      border-color: rgba(122,162,255,.55);
+      background: rgba(122,162,255,.18);
+    }
+
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 0 16px 40px;
+    }
+    section.tab{
+      display:none;
+    }
+    section.tab.active{
+      display:block;
+    }
+
+    .row{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .row-left, .row-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    label{
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+    }
+    input[type="text"], select{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(15,23,39,.85);
+      color:var(--text);
+      outline:none;
+      min-width: 220px;
+    }
+    input[type="range"]{ width: 160px; }
+
+    button{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      transition: transform .05s ease, background .15s ease, border .15s ease, opacity .15s ease;
+      user-select:none;
+    }
+    button:hover{ background: rgba(255,255,255,.10); }
+    button:active{ transform: translateY(1px); }
+    button.primary{
+      border-color: rgba(122,162,255,.55);
+      background: rgba(122,162,255,.18);
+    }
+    button.good{
+      border-color: rgba(45,212,191,.55);
+      background: rgba(45,212,191,.14);
+    }
+    button.bad{
+      border-color: rgba(251,113,133,.55);
+      background: rgba(251,113,133,.12);
+    }
+    button.mini{
+      padding:8px 10px;
+      border-radius:10px;
+      font-weight:700;
+    }
+    button:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){
+      .grid-2{ grid-template-columns: 1fr; }
+      input[type="text"], select{ min-width: 100%; }
+    }
+
+    .card{
+      border:1px solid var(--border);
+      background: rgba(18,26,43,.80);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+    .muted{ color: var(--muted); }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(15,23,39,.70);
+    }
+    th, td{
+      padding:10px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      vertical-align:middle;
+    }
+    th{
+      text-align:right;
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    tr:last-child td{ border-bottom:none; }
+    td.eng{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      direction:ltr;
+      text-align:left;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    tr.known td{
+      background: rgba(45,212,191,.06);
+    }
+
+    .flash{
+      text-align:center;
+      padding: 22px 14px;
+      border-radius: var(--radius);
+      border: 1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+    }
+    .flash .big{
+      font-size: clamp(26px, 4.2vw, 44px);
+      font-weight: 900;
+      letter-spacing: .3px;
+      margin: 0;
+      direction:ltr;
+      text-align:center;
+    }
+    .flash .small{
+      margin-top:10px;
+      font-size: clamp(18px, 2.3vw, 24px);
+      font-weight: 800;
+    }
+    .flash .small.hidden{ visibility:hidden; }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      font-weight:800;
+      font-size: 13px;
+    }
+
+    .options{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    @media (max-width: 700px){
+      .options{ grid-template-columns: 1fr; }
+    }
+
+    .feedback{
+      margin-top: 10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--muted);
+      min-height: 44px;
+    }
+    .feedback.good{ border-color: rgba(45,212,191,.55); color: var(--good); background: rgba(45,212,191,.10); }
+    .feedback.bad{ border-color: rgba(251,113,133,.55); color: var(--bad); background: rgba(251,113,133,.10); }
+
+    .match-cols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    @media (max-width: 900px){
+      .match-cols{ grid-template-columns: 1fr; }
+    }
+    .match-col{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(15,23,39,.65);
+      padding: 12px;
+      min-height: 120px;
+    }
+    .match-col h3{
+      margin:0 0 10px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+    .match-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:8px;
+    }
+    .match-grid button{
+      text-align:right;
+      font-weight:900;
+    }
+    .match-grid button.ltr{
+      direction:ltr;
+      text-align:left;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .selected{
+      outline: 3px solid rgba(122,162,255,.35);
+      border-color: rgba(122,162,255,.6);
+      background: rgba(122,162,255,.14);
+    }
+    .ok{
+      border-color: rgba(45,212,191,.6) !important;
+      background: rgba(45,212,191,.12) !important;
+    }
+    .no{
+      border-color: rgba(251,113,133,.6) !important;
+      background: rgba(251,113,133,.10) !important;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      direction:ltr;
+      text-align:left;
+      font-weight:900;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(15,23,39,.72);
+      width: 100%;
+    }
+    .hint{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(251,191,36,.45);
+      background: rgba(251,191,36,.08);
+      color: var(--warn);
+      font-weight:800;
+    }
+
+    footer{
+      max-width:1100px;
+      margin:0 auto 20px;
+      padding: 0 16px 16px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .small-note{
+      margin-top:8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="title">
+    <h1>אוצר מילים באנגלית – Teamwork Unit 2 (כיתה ו׳)</h1>
+    <span class="pill" id="progressPill">0/50 יודעת ✅</span>
+  </div>
+
+  <p class="subtitle">
+    כאן אפשר ללמוד את כל 50 המילים בעזרת כרטיסיות, חידון, משחק התאמה ואיות מהשמיעה.
+    לחצי על 🔊 כדי לשמוע את המילה באנגלית (הקראה אוטומטית של הדפדפן).
+  </p>
+
+  <div class="top-controls">
+    <label>
+      מהירות הקראה:
+      <input id="ttsRate" type="range" min="0.6" max="1.2" step="0.05" />
+      <span id="ttsRateVal" class="pill" style="padding:6px 10px;">0.95</span>
+    </label>
+
+    <button id="resetAll" class="bad" type="button" title="מוחק סימונים ותוצאות ומשיב להתחלה">איפוס כל ההתקדמות</button>
+  </div>
+
+  <div id="ttsStatus" class="notice" style="display:none;"></div>
+</header>
+
+<nav class="tabs" aria-label="בחירת משחק">
+  <button class="tab-btn active" data-tab="list" type="button">📚 רשימת מילים</button>
+  <button class="tab-btn" data-tab="cards" type="button">🃏 כרטיסיות</button>
+  <button class="tab-btn" data-tab="quiz" type="button">✅ חידון אמריקאי</button>
+  <button class="tab-btn" data-tab="match" type="button">🧩 התאמה</button>
+  <button class="tab-btn" data-tab="spelling" type="button">⌨️ איות מהשמיעה</button>
+</nav>
+
+<main>
+  <!-- LIST -->
+  <section id="tab-list" class="tab active">
+    <div class="panel">
+      <div class="row">
+        <div class="row-left">
+          <label for="searchInput">חיפוש (עברית/אנגלית):</label>
+          <input id="searchInput" type="text" placeholder="לדוגמה: goal / מטרה / famous ..." />
+        </div>
+
+        <div class="row-right">
+          <button id="randomWordBtn" class="primary" type="button">🎲 מילה אקראית</button>
+          <button id="clearKnownBtn" type="button" title="מנקה רק את הסימונים ✅">נקה סימוני ✅</button>
+        </div>
+      </div>
+
+      <p class="small-note">
+        טיפ: סמני ✅ על מילים שאת כבר יודעת. אחר-כך אפשר לתרגל רק “לא יודעת” בכרטיסיות/בחידון.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>כל המילים (לחצי 🔊 להאזנה)</h2>
+      <table aria-label="טבלת מילים">
+        <thead>
+          <tr>
+            <th style="width:26%;">מילה באנגלית</th>
+            <th>פירוש בעברית</th>
+            <th style="width:150px;">פעולות</th>
+          </tr>
+        </thead>
+        <tbody id="wordTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS -->
+  <section id="tab-cards" class="tab">
+    <div class="grid-2">
+      <div class="card">
+        <h2>כרטיסייה</h2>
+        <div class="flash" role="group" aria-label="כרטיסיית מילה">
+          <p class="big" id="flashEn">adult</p>
+          <p class="small hidden" id="flashHe">מבוגר/ת</p>
+
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+            <button id="flashSpeak" class="mini" type="button">🔊 האזנה</button>
+            <button id="flashFlip" class="mini primary" type="button">👀 הצג/הסתר פירוש</button>
+            <button id="flashKnown" class="mini good" type="button">✅ אני יודעת</button>
+            <button id="flashUnknown" class="mini" type="button">⬜ עוד לתרגל</button>
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+            <button id="flashPrev" type="button">⬅️ הקודם</button>
+            <button id="flashNext" type="button">הבא ➡️</button>
+            <button id="flashRandom" type="button">🎲 אקראי</button>
+          </div>
+
+          <p class="small-note" id="flashCounter" style="margin:10px 0 0;"></p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>מצבי תרגול</h2>
+
+        <div class="panel" style="margin:0;">
+          <div class="row">
+            <div class="row-left">
+              <label><input id="flashAutoReveal" type="checkbox" /> להציג פירוש ישר</label>
+            </div>
+            <div class="row-right">
+              <label><input id="flashOnlyUnknown" type="checkbox" /> תרגלי רק ⬜ “עוד לתרגל”</label>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div class="row-left">
+              <button id="flashReset" type="button">איפוס כרטיסיות</button>
+            </div>
+          </div>
+
+          <p class="small-note">
+            רעיון ללמידה: עברי על “⬜ עוד לתרגל” 3 פעמים ברצף. אם הצלחת 3 פעמים בלי לטעות – סמני ✅.
+          </p>
+        </div>
+
+        <div class="notice" style="margin-top:12px;">
+          <b>מטרה קטנה:</b> להגיע ל־10 מילים ✅ היום. אחר כך מחר עוד 10.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="tab-quiz" class="tab">
+    <div class="card">
+      <div class="row">
+        <div class="row-left">
+          <h2 style="margin:0;">חידון אמריקאי</h2>
+          <span class="pill" id="quizScorePill">0 נכונות מתוך 0</span>
+        </div>
+        <div class="row-right">
+          <label for="quizDirection">כיוון תרגול:</label>
+          <select id="quizDirection">
+            <option value="en2he">אנגלית → עברית</option>
+            <option value="he2en">עברית → אנגלית</option>
+          </select>
+          <label><input id="quizOnlyUnknown" type="checkbox" /> שאל רק “⬜ עוד לתרגל”</label>
+          <button id="quizReset" class="bad" type="button">איפוס חידון</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <div class="row">
+          <div class="row-left">
+            <span class="pill" id="quizCounterPill">שאלה 1</span>
+          </div>
+          <div class="row-right">
+            <button id="quizSpeak" class="mini" type="button">🔊 האזנה</button>
+            <button id="quizNext" class="primary" type="button" disabled>הבא ➡️</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div id="quizPrompt" class="flash" style="padding:18px; text-align:center;">
+            <div class="big" id="quizPromptText" style="margin:0;">adult</div>
+          </div>
+
+          <div class="options" id="quizOptions"></div>
+
+          <div class="feedback" id="quizFeedback">בחרי תשובה כדי להתחיל 🙂</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATCH -->
+  <section id="tab-match" class="tab">
+    <div class="card">
+      <div class="row">
+        <div class="row-left">
+          <h2 style="margin:0;">משחק התאמה</h2>
+          <span class="pill" id="matchPill">0/0 הותאמו</span>
+        </div>
+        <div class="row-right">
+          <label for="matchSize">כמה זוגות בסיבוב:</label>
+          <select id="matchSize">
+            <option value="6">6</option>
+            <option value="8" selected>8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+          </select>
+          <label><input id="matchOnlyUnknown" type="checkbox" /> רק “⬜ עוד לתרגל”</label>
+          <button id="matchStart" class="primary" type="button">התחל סיבוב</button>
+          <button id="matchReset" class="bad" type="button">איפוס משחק</button>
+        </div>
+      </div>
+
+      <div class="notice" style="margin-top:12px;">
+        איך משחקים? לוחצים על מילה באנגלית ואז על הפירוש בעברית. אם זה מתאים – זה ננעל ✅
+      </div>
+
+      <div class="match-cols">
+        <div class="match-col">
+          <h3>אנגלית (לחצי גם כדי לשמוע 🔊)</h3>
+          <div class="match-grid" id="matchEn"></div>
+        </div>
+        <div class="match-col">
+          <h3>עברית</h3>
+          <div class="match-grid" id="matchHe"></div>
+        </div>
+      </div>
+
+      <div class="feedback" id="matchFeedback" style="margin-top:14px;">לחצי “התחל סיבוב” כדי להתחיל.</div>
+    </div>
+  </section>
+
+  <!-- SPELLING -->
+  <section id="tab-spelling" class="tab">
+    <div class="grid-2">
+      <div class="card">
+        <h2>איות מהשמיעה (Spelling)</h2>
+        <div class="notice">
+          לוחצים 🔊, שומעים את המילה, ואז כותבים באנגלית. אפשר גם להסתכל על הפירוש בעברית.
+        </div>
+
+        <div class="panel" style="margin-top:12px;">
+          <div class="row">
+            <div class="row-left">
+              <span class="pill" id="spellStatsPill">0 נכונות מתוך 0</span>
+              <span class="pill" id="spellStreakPill">רצף: 0</span>
+            </div>
+            <div class="row-right">
+              <button id="spellSpeak" class="mini" type="button">🔊 האזנה</button>
+              <button id="spellNext" class="primary" type="button">מילה חדשה</button>
+              <button id="spellReset" class="bad" type="button">איפוס</button>
+            </div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <div class="pill">פירוש בעברית:</div>
+            <div id="spellHe" style="margin-top:8px; font-size:18px; font-weight:900;">—</div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label for="spellInput">הקלידי באנגלית:</label>
+            <input id="spellInput" class="kbd" type="text" autocomplete="off" spellcheck="false" placeholder="Type here..." />
+          </div>
+
+          <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button id="spellCheck" class="good" type="button">בדיקה ✅</button>
+            <button id="spellHint" type="button">רמז 💡</button>
+            <button id="spellPracticeWrong" type="button" title="יתרגל רק את מה שטעית בו">תרגלי רק טעויות 🧠</button>
+          </div>
+
+          <div id="spellHintBox" class="hint" style="display:none;"></div>
+          <div id="spellFeedback" class="feedback">טיפ: נסי קודם בלי להסתכל על הפירוש 🙂</div>
+        </div>
+
+        <p class="small-note">
+          טיפ למבחן: אם את יודעת לכתוב נכון – זה כמעט תמיד אומר שאת גם יודעת את המשמעות.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>שיטת לימוד קצרה (5 דקות)</h2>
+        <ol class="muted" style="margin-top:8px;">
+          <li><b>כרטיסיות</b>: עברי על ⬜ מילים קשות והקשיבי 🔊.</li>
+          <li><b>חידון</b>: 10 שאלות, נסי להגיע ל־8/10.</li>
+          <li><b>איות</b>: כתבי 5 מילים מהשמיעה.</li>
+          <li>סמני ✅ על מה שהצליח פעמיים ברצף.</li>
+        </ol>
+
+        <div class="notice" style="margin-top:12px;">
+          <b>זכרי:</b> מותר לטעות! טעות = סימן למילה שצריך עוד תרגול.
+        </div>
+
+        <div class="panel" style="margin-top:12px;">
+          <h2 style="margin:0 0 8px;">למה לפעמים אין צליל?</h2>
+          <div class="muted" style="font-size:14px;">
+            ההקראה משתמשת ב־<span dir="ltr">SpeechSynthesis</span> של הדפדפן. אם אין קול:
+            <ul style="margin:8px 0 0;">
+              <li>נסי לפתוח בכרום/אדג׳ במחשב או בטלפון.</li>
+              <li>בדקי שהווליום לא על שקט.</li>
+              <li>נסי ללחוץ פעם אחת על כפתור 🔊 (לעיתים דפדפנים חוסמים צליל עד לחיצה).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  העמוד עובד בלי אינטרנט (חוץ מהקולות – תלוי במכשיר). אפשר לשמור אותו כקובץ <span dir="ltr">.html</span> ולהשתמש שוב ושוב.
+</footer>
+
+<script>
+/* =========================
+   DATA (50 words)
+   ========================= */
+const WORDS = [
+  { en: "adult",          speak: "adult",          he: "מבוגר/ת" },
+  { en: "ability",        speak: "ability",        he: "יכולת" },
+  { en: "at least",       speak: "at least",       he: "לפחות" },
+  { en: "angry",          speak: "angry",          he: "כועס/ת" },
+  { en: "audience",       speak: "audience",       he: "קהל" },
+  { en: "badly",          speak: "badly",          he: "בצורה גרועה" },
+  { en: "become",         speak: "become",         he: "להפוך ל־ / להיות" },
+  { en: "champion",       speak: "champion",       he: "אלוף/ה" },
+  { en: "collect",        speak: "collect",        he: "לאסוף" },
+  { en: "competition",    speak: "competition",    he: "תחרות" },
+  { en: "discover",       speak: "discover",       he: "לגלות" },
+  { en: "distance",       speak: "distance",       he: "מרחק" },
+  { en: "dream (v)",      speak: "dream",          he: "לחלום (פועל)" },
+  { en: "effort",         speak: "effort",         he: "מאמץ" },
+  { en: "entertain",      speak: "entertain",      he: "לבדר" },
+  { en: "event",          speak: "event",          he: "אירוע" },
+  { en: "exercise (n)",   speak: "exercise",       he: "אימון / פעילות גופנית (שם עצם)" },
+  { en: "expect",         speak: "expect",         he: "לצפות; לצפות ש־" },
+  { en: "final",          speak: "final",          he: "סופי/ת; גמר" },
+  { en: "healthy",        speak: "healthy",        he: "בריא/ה" },
+  { en: "heavy",          speak: "heavy",          he: "כבד/ה" },
+  { en: "free",           speak: "free",           he: "חופשי/ת; בחינם" },
+  { en: "goal",           speak: "goal",           he: "מטרה; (בספורט) שער" },
+  { en: "instruction",    speak: "instruction",    he: "הוראה / הנחיה" },
+  { en: "In that case",   speak: "in that case",   he: "במקרה כזה" },
+  { en: "judge",          speak: "judge",          he: "שופט/ת; לשפוט" },
+  { en: "key",            speak: "key",            he: "מפתח; חשוב" },
+  { en: "necessary",      speak: "necessary",      he: "הכרחי/ת; נחוץ/ה" },
+  { en: "opportunity",    speak: "opportunity",    he: "הזדמנות" },
+  { en: "perform",        speak: "perform",        he: "להופיע / לבצע" },
+  { en: "personal",       speak: "personal",       he: "אישי/ת" },
+  { en: "project",        speak: "project",        he: "פרויקט" },
+  { en: "practice (v)",   speak: "practice",       he: "להתאמן / לתרגל (פועל)" },
+  { en: "prepared",       speak: "prepared",       he: "מוכן/ה" },
+  { en: "prove",          speak: "prove",          he: "להוכיח" },
+  { en: "public",         speak: "public",         he: "ציבורי/ת; הציבור" },
+  { en: "puzzle",         speak: "puzzle",         he: "חידה / פאזל" },
+  { en: "reach",          speak: "reach",          he: "להגיע ל־" },
+  { en: "role",           speak: "role",           he: "תפקיד" },
+  { en: "role model",     speak: "role model",     he: "מודל לחיקוי" },
+  { en: "stage",          speak: "stage",          he: "במה; שלב" },
+  { en: "serious",        speak: "serious",        he: "רציני/ת" },
+  { en: "similar",        speak: "similar",        he: "דומה" },
+  { en: "successful",     speak: "successful",     he: "מצליח/ה" },
+  { en: "take part",      speak: "take part",      he: "להשתתף" },
+  { en: "try out",        speak: "try out",        he: "לנסות; להיבחן/אודישן" },
+  { en: "valuable",       speak: "valuable",       he: "יקר ערך; חשוב" },
+  { en: "voice",          speak: "voice",          he: "קול" },
+  { en: "well-known",     speak: "well known",     he: "ידוע/ה; מפורסם/ת" },
+  { en: "wish (V)",       speak: "wish",           he: "לאחל; לרצות (הלוואי)" }
+];
+
+/* =========================
+   STATE + STORAGE
+   ========================= */
+const STORAGE_KEY = "teamwork_unit2_vocab_v1";
+
+const defaultState = () => ({
+  known: {},          // idx -> true
+  ttsRate: 0.95,
+  flashIndex: 0
+});
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const s = JSON.parse(raw);
+    return { ...defaultState(), ...s, known: s.known || {} };
+  }catch(e){
+    return defaultState();
+  }
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* =========================
+   HELPERS
+   ========================= */
+function esc(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function normalizeForSearch(s){
+  return String(s).toLowerCase().trim().replace(/\s+/g, " ");
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function indicesAll(){
+  return [...Array(WORDS.length).keys()];
+}
+function indicesOnlyUnknown(){
+  const out = [];
+  for(let i=0;i<WORDS.length;i++){
+    if(!state.known[i]) out.push(i);
+  }
+  return out.length ? out : indicesAll(); // אם הכל ✅, לא נתקעים
+}
+function setFeedback(el, text, kind){
+  el.classList.remove("good","bad");
+  if(kind === "good") el.classList.add("good");
+  if(kind === "bad") el.classList.add("bad");
+  el.textContent = text;
+}
+
+/* =========================
+   TTS (Speech Synthesis)
+   ========================= */
+let voices = [];
+function refreshVoices(){
+  if(!("speechSynthesis" in window)) return;
+  voices = window.speechSynthesis.getVoices() || [];
+}
+if("speechSynthesis" in window){
+  refreshVoices();
+  window.speechSynthesis.onvoiceschanged = () => refreshVoices();
+}
+
+function pickEnglishVoice(){
+  if(!voices || !voices.length) return null;
+  const preferred = voices.find(v => /^en(-|_)/i.test(v.lang) && /israel/i.test(v.name)) ||
+                    voices.find(v => /^en(-|_)/i.test(v.lang) && /female|woman|susan|zira|karen/i.test(v.name)) ||
+                    voices.find(v => /^en(-|_)/i.test(v.lang));
+  return preferred || voices[0];
+}
+
+function speakText(text){
+  const status = document.getElementById("ttsStatus");
+  if(!("speechSynthesis" in window)){
+    status.style.display = "block";
+    status.textContent = "בדפדפן הזה אין אפשרות הקראה (SpeechSynthesis). נסי כרום/אדג׳.";
+    return;
+  }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    u.rate = Number(state.ttsRate) || 0.95;
+    const v = pickEnglishVoice();
+    if(v) u.voice = v;
+    window.speechSynthesis.speak(u);
+    status.style.display = "none";
+  }catch(e){
+    status.style.display = "block";
+    status.textContent = "לא הצלחתי להקריא. נסי לרענן את העמוד או לפתוח בדפדפן אחר.";
+  }
+}
+
+function speakIndex(idx){
+  const w = WORDS[idx];
+  const text = (w && w.speak) ? w.speak : (w ? w.en : "");
+  speakText(text);
+}
+
+/* =========================
+   PROGRESS
+   ========================= */
+function knownCount(){
+  return Object.keys(state.known).length;
+}
+function updateProgress(){
+  const pill = document.getElementById("progressPill");
+  pill.textContent = `${knownCount()}/${WORDS.length} יודעת ✅`;
+}
+
+/* =========================
+   TABS
+   ========================= */
+function showTab(name){
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  document.querySelectorAll("section.tab").forEach(s => s.classList.toggle("active", s.id === `tab-${name}`));
+}
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => showTab(btn.dataset.tab));
+});
+
+/* =========================
+   LIST
+   ========================= */
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("input", () => renderList(searchInput.value));
+
+document.getElementById("randomWordBtn").addEventListener("click", () => {
+  const idx = Math.floor(Math.random()*WORDS.length);
+  speakIndex(idx);
+  searchInput.value = "";
+  renderList("");
+  highlightRow(idx);
+});
+
+document.getElementById("clearKnownBtn").addEventListener("click", () => {
+  state.known = {};
+  saveState();
+  renderList(searchInput.value);
+  updateProgress();
+});
+
+function highlightRow(idx){
+  const row = document.querySelector(`tr[data-idx="${idx}"]`);
+  if(!row) return;
+  row.scrollIntoView({behavior:"smooth", block:"center"});
+  row.style.outline = "3px solid rgba(122,162,255,.35)";
+  setTimeout(() => row.style.outline = "", 1200);
+}
+
+function toggleKnown(idx, value){
+  if(typeof value === "boolean"){
+    if(value) state.known[idx] = true;
+    else delete state.known[idx];
+  }else{
+    if(state.known[idx]) delete state.known[idx];
+    else state.known[idx] = true;
+  }
+  saveState();
+  updateProgress();
+}
+
+function renderList(filter){
+  const tbody = document.getElementById("wordTableBody");
+  const f = normalizeForSearch(filter || "");
+  const rows = [];
+  WORDS.forEach((w, idx) => {
+    const hay = normalizeForSearch(w.en + " " + w.he);
+    if(!f || hay.includes(f)){
+      const known = !!state.known[idx];
+      rows.push(`
+        <tr class="${known ? "known" : ""}" data-idx="${idx}">
+          <td class="eng" dir="ltr">${esc(w.en)}</td>
+          <td>${esc(w.he)}</td>
+          <td>
+            <button type="button" class="mini" data-speak="${idx}" title="האזנה">🔊</button>
+            <button type="button" class="mini" data-known="${idx}" title="סמני ✅ אם את יודעת">${known ? "✅" : "⬜"}</button>
+          </td>
+        </tr>
+      `);
+    }
+  });
+  tbody.innerHTML = rows.join("");
+  tbody.querySelectorAll("button[data-speak]").forEach(btn => btn.addEventListener("click", () => speakIndex(Number(btn.dataset.speak))));
+  tbody.querySelectorAll("button[data-known]").forEach(btn => btn.addEventListener("click", () => {
+    toggleKnown(Number(btn.dataset.known));
+    renderList(searchInput.value);
+  }));
+}
+
+/* =========================
+   FLASHCARDS
+   ========================= */
+let flashRevealed = false;
+
+const flashAutoReveal = document.getElementById("flashAutoReveal");
+const flashOnlyUnknown = document.getElementById("flashOnlyUnknown");
+
+function flashPool(){
+  return flashOnlyUnknown.checked ? indicesOnlyUnknown() : indicesAll();
+}
+
+function clampFlashIndex(){
+  const pool = flashPool();
+  if(!pool.length) return;
+  if(state.flashIndex < 0) state.flashIndex = 0;
+  if(state.flashIndex >= pool.length) state.flashIndex = pool.length - 1;
+}
+
+function flashCurrentIdx(){
+  const pool = flashPool();
+  if(!pool.length) return 0;
+  clampFlashIndex();
+  return pool[state.flashIndex];
+}
+
+function renderFlash(){
+  const pool = flashPool();
+  if(!pool.length){
+    document.getElementById("flashEn").textContent = "אין מילים לתרגל";
+    document.getElementById("flashHe").textContent = "";
+    return;
+  }
+  clampFlashIndex();
+  const idx = flashCurrentIdx();
+  const w = WORDS[idx];
+
+  document.getElementById("flashEn").textContent = w.en;
+  document.getElementById("flashHe").textContent = w.he;
+
+  const heEl = document.getElementById("flashHe");
+  const revealNow = flashAutoReveal.checked ? true : flashRevealed;
+  heEl.classList.toggle("hidden", !revealNow);
+
+  document.getElementById("flashCounter").textContent = `כרטיס ${state.flashIndex+1} מתוך ${pool.length} (מתוך 50 מילים)`;
+  updateProgress();
+}
+
+document.getElementById("flashSpeak").addEventListener("click", () => speakIndex(flashCurrentIdx()));
+document.getElementById("flashFlip").addEventListener("click", () => { flashRevealed = !flashRevealed; renderFlash(); });
+
+document.getElementById("flashKnown").addEventListener("click", () => {
+  toggleKnown(flashCurrentIdx(), true);
+  renderList(searchInput.value);
+  // קפיצה קדימה
+  flashRevealed = flashAutoReveal.checked;
+  const pool = flashPool();
+  if(state.flashIndex < pool.length-1) state.flashIndex++;
+  saveState();
+  renderFlash();
+});
+
+document.getElementById("flashUnknown").addEventListener("click", () => {
+  toggleKnown(flashCurrentIdx(), false);
+  renderList(searchInput.value);
+  flashRevealed = flashAutoReveal.checked;
+  const pool = flashPool();
+  if(state.flashIndex < pool.length-1) state.flashIndex++;
+  saveState();
+  renderFlash();
+});
+
+document.getElementById("flashPrev").addEventListener("click", () => {
+  state.flashIndex = Math.max(0, state.flashIndex - 1);
+  flashRevealed = flashAutoReveal.checked;
+  saveState();
+  renderFlash();
+});
+document.getElementById("flashNext").addEventListener("click", () => {
+  const pool = flashPool();
+  state.flashIndex = Math.min(pool.length-1, state.flashIndex + 1);
+  flashRevealed = flashAutoReveal.checked;
+  saveState();
+  renderFlash();
+});
+document.getElementById("flashRandom").addEventListener("click", () => {
+  const pool = flashPool();
+  state.flashIndex = Math.floor(Math.random()*pool.length);
+  flashRevealed = flashAutoReveal.checked;
+  saveState();
+  renderFlash();
+});
+
+document.getElementById("flashReset").addEventListener("click", () => {
+  state.flashIndex = 0;
+  flashRevealed = flashAutoReveal.checked;
+  saveState();
+  renderFlash();
+});
+
+flashAutoReveal.addEventListener("change", () => { flashRevealed = flashAutoReveal.checked; renderFlash(); });
+flashOnlyUnknown.addEventListener("change", () => {
+  state.flashIndex = 0;
+  flashRevealed = flashAutoReveal.checked;
+  saveState();
+  renderFlash();
+});
+
+/* =========================
+   QUIZ
+   ========================= */
+const quizDirectionEl = document.getElementById("quizDirection");
+const quizOnlyUnknownEl = document.getElementById("quizOnlyUnknown");
+const quizResetBtn = document.getElementById("quizReset");
+const quizNextBtn = document.getElementById("quizNext");
+const quizSpeakBtn = document.getElementById("quizSpeak");
+
+const quizPromptText = document.getElementById("quizPromptText");
+const quizOptions = document.getElementById("quizOptions");
+const quizFeedback = document.getElementById("quizFeedback");
+const quizScorePill = document.getElementById("quizScorePill");
+const quizCounterPill = document.getElementById("quizCounterPill");
+
+let quizState = {
+  pool: [],
+  currentIdx: null,
+  score: 0,
+  total: 0,
+  answered: false,
+};
+
+function quizBuildPool(){
+  const base = quizOnlyUnknownEl.checked ? indicesOnlyUnknown() : indicesAll();
+  quizState.pool = shuffle(base);
+}
+
+function quizUpdatePills(){
+  quizScorePill.textContent = `${quizState.score} נכונות מתוך ${quizState.total}`;
+  quizCounterPill.textContent = `שאלה ${Math.min(quizState.total+1, quizState.pool.length+quizState.total+1)}`;
+}
+
+function quizReset(){
+  quizState.score = 0;
+  quizState.total = 0;
+  quizState.answered = false;
+  quizState.currentIdx = null;
+  quizBuildPool();
+  quizNextBtn.disabled = true;
+  setFeedback(quizFeedback, "בחרי תשובה כדי להתחיל 🙂", null);
+  quizNextQuestion();
+}
+
+function quizNextQuestion(){
+  quizState.answered = false;
+  quizNextBtn.disabled = true;
+  quizOptions.innerHTML = "";
+  quizFeedback.classList.remove("good","bad");
+
+  if(quizState.pool.length === 0){
+    quizPromptText.textContent = "סיימת את כל השאלות! 🎉";
+    setFeedback(quizFeedback, "לחצי “איפוס חידון” כדי להתחיל מחדש, או סמני עוד מילים ✅ מהרשימה.", "good");
+    return;
+  }
+
+  const idx = quizState.pool.pop();
+  quizState.currentIdx = idx;
+  const w = WORDS[idx];
+
+  const dir = quizDirectionEl.value;
+
+  // build options
+  const candidates = indicesAll().filter(i => i !== idx);
+  const other = shuffle(candidates).slice(0, 3);
+  const optionIdxs = shuffle([idx, ...other]);
+
+  if(dir === "en2he"){
+    quizPromptText.textContent = w.en;
+    quizPromptText.style.direction = "ltr";
+    quizPromptText.style.textAlign = "center";
+  }else{
+    quizPromptText.textContent = w.he;
+    quizPromptText.style.direction = "rtl";
+    quizPromptText.style.textAlign = "center";
+  }
+
+  optionIdxs.forEach(oi => {
+    const ow = WORDS[oi];
+    const text = (dir === "en2he") ? ow.he : ow.en;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = text;
+    btn.dataset.correct = (oi === idx) ? "1" : "0";
+    if(dir === "he2en"){
+      btn.style.direction = "ltr";
+      btn.style.textAlign = "left";
+      btn.style.fontFamily = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+    }
+
+    btn.addEventListener("click", () => quizAnswer(btn));
+    quizOptions.appendChild(btn);
+  });
+
+  quizUpdatePills();
+}
+
+function quizAnswer(btn){
+  if(quizState.answered) return;
+  quizState.answered = true;
+  quizState.total += 1;
+
+  const correct = btn.dataset.correct === "1";
+  if(correct) quizState.score += 1;
+
+  // disable all
+  quizOptions.querySelectorAll("button").forEach(b => b.disabled = true);
+
+  // mark correct option
+  quizOptions.querySelectorAll("button").forEach(b => {
+    if(b.dataset.correct === "1") b.classList.add("good");
+  });
+  if(!correct) btn.classList.add("bad");
+
+  const w = WORDS[quizState.currentIdx];
+  if(correct){
+    setFeedback(quizFeedback, "נכון! ✅", "good");
+  }else{
+    setFeedback(quizFeedback, `לא בדיוק. התשובה הנכונה: ${quizDirectionEl.value === "en2he" ? w.he : w.en}`, "bad");
+  }
+
+  quizUpdatePills();
+  quizNextBtn.disabled = false;
+}
+
+quizResetBtn.addEventListener("click", quizReset);
+quizNextBtn.addEventListener("click", quizNextQuestion);
+quizSpeakBtn.addEventListener("click", () => {
+  if(quizState.currentIdx === null) return;
+  speakIndex(quizState.currentIdx);
+});
+quizDirectionEl.addEventListener("change", quizReset);
+quizOnlyUnknownEl.addEventListener("change", quizReset);
+
+/* =========================
+   MATCHING GAME
+   ========================= */
+const matchSizeEl = document.getElementById("matchSize");
+const matchOnlyUnknownEl = document.getElementById("matchOnlyUnknown");
+const matchStartBtn = document.getElementById("matchStart");
+const matchResetBtn = document.getElementById("matchReset");
+const matchEnEl = document.getElementById("matchEn");
+const matchHeEl = document.getElementById("matchHe");
+const matchFeedback = document.getElementById("matchFeedback");
+const matchPill = document.getElementById("matchPill");
+
+let matchState = {
+  size: 8,
+  indices: [],
+  enOrder: [],
+  heOrder: [],
+  selectedEn: null,
+  selectedHe: null,
+  matched: new Set()
+};
+
+function matchPool(){
+  return matchOnlyUnknownEl.checked ? indicesOnlyUnknown() : indicesAll();
+}
+
+function matchReset(){
+  matchState.indices = [];
+  matchState.enOrder = [];
+  matchState.heOrder = [];
+  matchState.selectedEn = null;
+  matchState.selectedHe = null;
+  matchState.matched = new Set();
+  matchEnEl.innerHTML = "";
+  matchHeEl.innerHTML = "";
+  matchPill.textContent = "0/0 הותאמו";
+  setFeedback(matchFeedback, "לחצי “התחל סיבוב” כדי להתחיל.", null);
+}
+
+function matchStart(){
+  const pool = matchPool();
+  const size = Math.min(Number(matchSizeEl.value), pool.length);
+  matchState.size = size;
+
+  matchState.indices = shuffle(pool).slice(0, size);
+  matchState.enOrder = shuffle(matchState.indices);
+  matchState.heOrder = shuffle(matchState.indices);
+  matchState.selectedEn = null;
+  matchState.selectedHe = null;
+  matchState.matched = new Set();
+
+  renderMatch();
+  setFeedback(matchFeedback, "בחרי זוגות!", null);
+}
+
+function renderMatch(){
+  matchEnEl.innerHTML = "";
+  matchHeEl.innerHTML = "";
+
+  matchState.enOrder.forEach(idx => {
+    const w = WORDS[idx];
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = w.en;
+    btn.classList.add("ltr");
+    btn.dataset.idx = String(idx);
+    btn.addEventListener("click", () => {
+      speakIndex(idx);
+      matchSelect("en", idx, btn);
+    });
+    matchEnEl.appendChild(btn);
+  });
+
+  matchState.heOrder.forEach(idx => {
+    const w = WORDS[idx];
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = w.he;
+    btn.dataset.idx = String(idx);
+    btn.addEventListener("click", () => matchSelect("he", idx, btn));
+    matchHeEl.appendChild(btn);
+  });
+
+  updateMatchPill();
+}
+
+function updateMatchPill(){
+  matchPill.textContent = `${matchState.matched.size}/${matchState.size} הותאמו`;
+}
+
+function matchClearSelection(){
+  matchState.selectedEn = null;
+  matchState.selectedHe = null;
+  matchEnEl.querySelectorAll("button").forEach(b => b.classList.remove("selected","no"));
+  matchHeEl.querySelectorAll("button").forEach(b => b.classList.remove("selected","no"));
+}
+
+function matchSelect(side, idx, btn){
+  if(matchState.matched.has(idx)) return;
+
+  // toggle selection
+  if(side === "en"){
+    matchEnEl.querySelectorAll("button").forEach(b => b.classList.remove("selected","no"));
+    btn.classList.add("selected");
+    matchState.selectedEn = idx;
+  }else{
+    matchHeEl.querySelectorAll("button").forEach(b => b.classList.remove("selected","no"));
+    btn.classList.add("selected");
+    matchState.selectedHe = idx;
+  }
+
+  // check if both selected
+  if(matchState.selectedEn !== null && matchState.selectedHe !== null){
+    const ok = matchState.selectedEn === matchState.selectedHe;
+
+    if(ok){
+      matchState.matched.add(matchState.selectedEn);
+
+      // lock buttons
+      matchEnEl.querySelectorAll(`button[data-idx="${matchState.selectedEn}"]`).forEach(b => {
+        b.classList.remove("selected");
+        b.classList.add("ok");
+        b.disabled = true;
+      });
+      matchHeEl.querySelectorAll(`button[data-idx="${matchState.selectedHe}"]`).forEach(b => {
+        b.classList.remove("selected");
+        b.classList.add("ok");
+        b.disabled = true;
+      });
+
+      setFeedback(matchFeedback, "כל הכבוד! ✅", "good");
+      updateMatchPill();
+      matchState.selectedEn = null;
+      matchState.selectedHe = null;
+
+      if(matchState.matched.size === matchState.size){
+        setFeedback(matchFeedback, "סיימת סיבוב! 🎉 לחצי “התחל סיבוב” לסיבוב חדש.", "good");
+      }
+    }else{
+      setFeedback(matchFeedback, "לא מתאים… נסי שוב 🙂", "bad");
+      // flash red and clear
+      matchEnEl.querySelectorAll(`button[data-idx="${matchState.selectedEn}"]`).forEach(b => b.classList.add("no"));
+      matchHeEl.querySelectorAll(`button[data-idx="${matchState.selectedHe}"]`).forEach(b => b.classList.add("no"));
+      setTimeout(() => matchClearSelection(), 650);
+    }
+  }
+}
+
+matchStartBtn.addEventListener("click", matchStart);
+matchResetBtn.addEventListener("click", matchReset);
+matchOnlyUnknownEl.addEventListener("change", matchReset);
+
+/* =========================
+   SPELLING
+   ========================= */
+const spellStatsPill = document.getElementById("spellStatsPill");
+const spellStreakPill = document.getElementById("spellStreakPill");
+const spellSpeakBtn = document.getElementById("spellSpeak");
+const spellNextBtn = document.getElementById("spellNext");
+const spellResetBtn = document.getElementById("spellReset");
+const spellHeEl = document.getElementById("spellHe");
+const spellInput = document.getElementById("spellInput");
+const spellCheckBtn = document.getElementById("spellCheck");
+const spellHintBtn = document.getElementById("spellHint");
+const spellPracticeWrongBtn = document.getElementById("spellPracticeWrong");
+const spellHintBox = document.getElementById("spellHintBox");
+const spellFeedback = document.getElementById("spellFeedback");
+
+let spellState = {
+  currentIdx: null,
+  correct: 0,
+  total: 0,
+  streak: 0,
+  wrong: new Set(),
+  mode: "random", // random | wrong
+  wrongQueue: []
+};
+
+function normalizeEn(s){
+  return String(s)
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ")
+    .replace(/–/g,"-")
+    .replace(/[“”]/g,'"')
+    .replace(/[’]/g,"'");
+}
+
+function acceptableAnswers(w){
+  const base = normalizeEn(w.speak || w.en);
+  const set = new Set([base]);
+
+  if(base.includes("-")) set.add(base.replace(/-/g, " "));
+  if(base.includes(" ")) set.add(base.replace(/\s+/g, "-"));
+
+  // allow also the display form without parentheses (if any)
+  const displayNoParen = normalizeEn(w.en.replace(/\s*\([^)]*\)\s*/g, "").trim());
+  if(displayNoParen) {
+    set.add(displayNoParen);
+    if(displayNoParen.includes("-")) set.add(displayNoParen.replace(/-/g, " "));
+    if(displayNoParen.includes(" ")) set.add(displayNoParen.replace(/\s+/g,"-"));
+  }
+
+  return set;
+}
+
+function answerForDisplay(w){
+  return (w.speak || w.en).trim();
+}
+
+function patternForAnswer(ans){
+  return ans.replace(/[A-Za-z]/g, "_");
+}
+
+function updateSpellPills(){
+  spellStatsPill.textContent = `${spellState.correct} נכונות מתוך ${spellState.total}`;
+  spellStreakPill.textContent = `רצף: ${spellState.streak}`;
+}
+
+function pickRandomIdxFrom(pool){
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function spellNewWord(){
+  spellHintBox.style.display = "none";
+  spellHintBox.textContent = "";
+  spellFeedback.classList.remove("good","bad");
+  spellFeedback.textContent = "טיפ: נסי קודם בלי להסתכל על הפירוש 🙂";
+  spellInput.value = "";
+  spellInput.focus();
+
+  let idx;
+  if(spellState.mode === "wrong"){
+    if(spellState.wrongQueue.length === 0){
+      spellState.mode = "random";
+    }else{
+      idx = spellState.wrongQueue.pop();
+    }
+  }
+
+  if(idx === undefined){
+    idx = Math.floor(Math.random()*WORDS.length);
+  }
+
+  spellState.currentIdx = idx;
+  spellHeEl.textContent = WORDS[idx].he;
+  updateSpellPills();
+}
+
+function spellSpeak(){
+  if(spellState.currentIdx === null) return;
+  speakIndex(spellState.currentIdx);
+}
+
+function spellCheck(){
+  if(spellState.currentIdx === null) return;
+  const w = WORDS[spellState.currentIdx];
+  const user = normalizeEn(spellInput.value);
+
+  if(!user){
+    setFeedback(spellFeedback, "כתבי משהו ואז לחצי בדיקה ✅", "bad");
+    return;
+  }
+
+  const answers = acceptableAnswers(w);
+  spellState.total += 1;
+
+  if(answers.has(user)){
+    spellState.correct += 1;
+    spellState.streak += 1;
+    toggleKnown(spellState.currentIdx, true);
+    renderList(searchInput.value);
+    setFeedback(spellFeedback, "נכון! ✅ מעולה!", "good");
+    spellNewWord();
+  }else{
+    spellState.streak = 0;
+    spellState.wrong.add(spellState.currentIdx);
+    const correct = answerForDisplay(w);
+    setFeedback(spellFeedback, `לא בדיוק. התשובה הנכונה: ${correct}`, "bad");
+    updateSpellPills();
+  }
+}
+
+function spellHint(){
+  if(spellState.currentIdx === null) return;
+  const w = WORDS[spellState.currentIdx];
+  const ans = answerForDisplay(w);
+  const lettersOnly = ans.replace(/[^A-Za-z]/g, "");
+  const firstLetter = (ans.match(/[A-Za-z]/) || ["?"])[0];
+  const pattern = patternForAnswer(ans);
+
+  spellHintBox.style.display = "block";
+  spellHintBox.innerHTML = `<div>רמז: מתחיל ב־<span dir="ltr"><b>${esc(firstLetter)}</b></span></div>
+                            <div>דפוס: <span dir="ltr" style="font-family:ui-monospace,monospace;"><b>${esc(pattern)}</b></span></div>
+                            <div>מספר אותיות (בלי רווחים/מקפים): <b>${lettersOnly.length}</b></div>`;
+}
+
+function spellPracticeWrong(){
+  if(spellState.wrong.size === 0){
+    setFeedback(spellFeedback, "אין טעויות לתרגל כרגע 🎉", "good");
+    return;
+  }
+  spellState.mode = "wrong";
+  spellState.wrongQueue = shuffle([...spellState.wrong]);
+  setFeedback(spellFeedback, "מצב טעויות: עכשיו יתרגל רק מילים שטעית בהן 🧠", null);
+  spellNewWord();
+}
+
+function spellReset(){
+  spellState.currentIdx = null;
+  spellState.correct = 0;
+  spellState.total = 0;
+  spellState.streak = 0;
+  spellState.wrong = new Set();
+  spellState.mode = "random";
+  spellState.wrongQueue = [];
+  spellNewWord();
+  updateSpellPills();
+}
+
+spellSpeakBtn.addEventListener("click", spellSpeak);
+spellNextBtn.addEventListener("click", spellNewWord);
+spellResetBtn.addEventListener("click", spellReset);
+spellCheckBtn.addEventListener("click", spellCheck);
+spellHintBtn.addEventListener("click", spellHint);
+spellPracticeWrongBtn.addEventListener("click", spellPracticeWrong);
+
+spellInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    e.preventDefault();
+    spellCheck();
+  }
+});
+
+/* =========================
+   GLOBAL RESET
+   ========================= */
+document.getElementById("resetAll").addEventListener("click", () => {
+  if(!confirm("לאפס את כל ההתקדמות? זה ימחק סימוני ✅ ותוצאות משחקים.")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = defaultState();
+  saveState();
+
+  // reset UI
+  document.getElementById("ttsRate").value = state.ttsRate;
+  document.getElementById("ttsRateVal").textContent = state.ttsRate.toFixed(2);
+
+  renderList("");
+  updateProgress();
+
+  state.flashIndex = 0;
+  flashRevealed = false;
+  renderFlash();
+
+  quizReset();
+  matchReset();
+  spellReset();
+});
+
+/* =========================
+   INIT
+   ========================= */
+(function init(){
+  // init tts rate
+  const rate = Number(state.ttsRate) || 0.95;
+  const rateEl = document.getElementById("ttsRate");
+  rateEl.value = rate;
+  document.getElementById("ttsRateVal").textContent = rate.toFixed(2);
+
+  rateEl.addEventListener("input", () => {
+    state.ttsRate = Number(rateEl.value);
+    document.getElementById("ttsRateVal").textContent = state.ttsRate.toFixed(2);
+    saveState();
+  });
+
+  renderList("");
+  updateProgress();
+  renderFlash();
+  quizReset();
+  matchReset();
+  spellReset();
+})();
+</script>
+
+</body>
+</html>
